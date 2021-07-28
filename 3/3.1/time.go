@@ -1,17 +1,8 @@
-package time
+package main
 
-import (
-	"fmt"
-	"log"
+import "Level2/timemod"
 
-	"github.com/beevik/ntp"
-)
-
-func PrintExactTime(){
-	time, err := ntp.Time("ntp1.stratum2.ru")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Current time: ", time)
+func main(){
+	timemod.PrintExactTime()
 }
+
