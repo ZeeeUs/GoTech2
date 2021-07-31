@@ -1,4 +1,4 @@
-package OwnMod
+package ownmod
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 	"github.com/beevik/ntp"
 )
 
+// PrintExactTime печатает точное время
 func PrintExactTime() {
 	time, err := ntp.Time("0.beevik-ntp.pool.ntp.org")
 	if err != nil {
