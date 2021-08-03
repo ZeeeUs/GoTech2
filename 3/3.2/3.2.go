@@ -4,41 +4,36 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"text/scanner"
 )
 
-// unpacker распаковывает строки
-func unpacker(s string) {
-	// Разбираем строку и записываем посимвольно в слайс
-	arr := strings.Split(s, "")
-	var str string
-	var counter int
-
-	for i, v := range arr {
-		// Пытаемся перевести элемент слайса в int
-		num, err := strconv.Atoi(v)
-		if err != nil {
-			str += v
-			counter++
-			continue
-		}
-
-		if i != 0 {
-			// Проверка на наличие букв в слайсе
-			if counter == 0 {
-				continue
+// Функция unpacking сканирует и распаковывает строки
+func unpacking(s string) {
+	var sc scanner.Scanner
+	var res string
+	var prev string
+	sc.Init(strings.NewReader(s))
+	sc.Mode = scanner.ScanChars | scanner.ScanInts
+	for tok := sc.Scan(); tok != scanner.EOF; tok = sc.Scan() {
+		switch tok {
+		case scanner.Int:
+			num, err := strconv.Atoi(sc.TokenText())
+			if err != nil {
+				fmt.Printf("Something went wrong %s", err)
 			}
-			str += strings.Repeat(arr[i-1], num - 1)
+			res += strings.Repeat(prev, num-1)
+		default:
+			prev = sc.TokenText()
+			res += sc.TokenText()
 		}
 	}
-
-	fmt.Println(str)
+	fmt.Println(res)
 }
 
 func main() {
-	unpacker("a4bc2d5e")
-	unpacker("abcd")
-	unpacker("34")
-	unpacker("34a3")
-	unpacker("")
-	unpacker("234f4a")
+	//unpacking("a4bc2d5e")
+	//unpacking("abcd")
+	//unpacking("")
+	//unpacking("3245")
+	unpacking("3eb5d5")
 }
