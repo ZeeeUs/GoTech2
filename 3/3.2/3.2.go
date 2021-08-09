@@ -8,7 +8,7 @@ import (
 )
 
 // Функция unpacking сканирует и распаковывает строки
-func unpacking(s string) {
+func unpacking(s string) string{
 	var sc scanner.Scanner
 	var res string
 	var prev string
@@ -27,6 +27,30 @@ func unpacking(s string) {
 			res += sc.TokenText()
 		}
 	}
+	return res
+}
+
+func escapeseq(s string) {
+	var res string
+	var arr []string
+	var buf []string
+	//s += `\`
+	arr = strings.Split(s, "")
+	for i, v := range arr {
+		if v == `\` || arr[i+1] == "\n"{
+			if arr[i+1] == `\`{
+				res += v
+			}
+			buf = append(buf, res)
+			res =""
+			continue
+		}
+		res += v
+	}
+	res = ""
+	for _, v := range buf{
+		res += unpacking(v)
+	}
 	fmt.Println(res)
 }
 
@@ -35,5 +59,10 @@ func main() {
 	//unpacking("abcd")
 	//unpacking("")
 	//unpacking("3245")
-	unpacking("3eb5d5")
+	//unpacking("3eb5d5")
+	//tdt(`qwe\a4\r5`)
+	//tdt(`qwe\\5`)
+	//escapeseq(`qwe\\5`)
+	//escapeseq(`qwe\a4\r5`)
+	escapeseq(`qwe\4\5`)
 }
