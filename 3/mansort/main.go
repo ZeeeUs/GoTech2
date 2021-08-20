@@ -84,6 +84,7 @@ func toUniqueize(data []string) []string {
 	return setToSlice
 }
 
+// Sort - главная функция, которая читает ключи и производит сортировку
 func Sort(data []string, flags inputFlags) []string {
 	if flags.unique {
 		data = toUniqueize(data)
