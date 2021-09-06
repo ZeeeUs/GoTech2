@@ -1,28 +1,28 @@
 package main
 
-type Peperoni struct {
+type Pepperoni struct {
 	Dough   string
 	Sauce   string
 	Topping string
 }
 
-func newPeperoni() *Peperoni {
-	return &Peperoni{}
+func newPeperoni() *Pepperoni {
+	return &Pepperoni{}
 }
 
-func (p *Peperoni) makeDough(dough string) {
-	p.Dough := dough
+func (p *Pepperoni) setDough() {
+	p.Dough = "Тонкое тесто"
 }
 
-func (p *Peperoni) makeSauce(sauce string) {
-	p.Sauce := sauce
+func (p *Pepperoni) setSauce() {
+	p.Sauce = "Острый"
 }
 
-func (p *Peperoni) makeTopping(topping string) {
-	p.Topping := topping
+func (p *Pepperoni) setTopping() {
+	p.Topping = "Моцарелла, пеперони, перец чили"
 }
 
-func (p *Peperoni) Build() Pizza {
+func (p *Pepperoni) getPizza() Pizza {
 	return Pizza{
 		dough: p.Dough,
 		sauce: p.Sauce,

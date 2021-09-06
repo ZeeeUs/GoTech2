@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"sort"
 	"strconv"
@@ -152,9 +151,18 @@ func Sort(data []string, flags inputFlags) []string {
 
 func main() {
 	par := parsArguments()
-	data, err := readFromFile(par.filename)
-	if err != nil {
-		log.Fatalln(err)
+	//data, err := readFromFile(par.filename)
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+
+	data := []string{
+		"abhishek 44",
+		"satish 1",
+		"rajan 22", "zvisehn 6",
+		"naveen 2",
+		"divyam 11",
+		"harsh",
 	}
 
 	data = Sort(data, par)

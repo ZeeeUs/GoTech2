@@ -55,7 +55,7 @@ func escapeseq(s string) {
 }
 
 func main() {
-	//unpacking("a4bc2d5e")
+	fmt.Println(unpacking("a4bc2d5e"))
 	//unpacking("abcd")
 	//unpacking("")
 	//unpacking("3245")
@@ -64,5 +64,5 @@ func main() {
 	//tdt(`qwe\\5`)
 	//escapeseq(`qwe\\5`)
 	//escapeseq(`qwe\a4\r5`)
-	escapeseq(`qwe\4\5`)
+	//escapeseq(`qwe\4\5`)
 }
