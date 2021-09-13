@@ -1,1 +1,201 @@
 package main
+
+import (
+	"bufio"
+	"flag"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"sort"
+	"strings"
+)
+
+type inputFlags struct {
+	after      int
+	before     int
+	context    int
+	count      bool
+	ignoreCase bool
+	inversion  bool
+	lineNum    bool
+	pattern    string
+	fileName   string
+}
+
+func main() {
+	params, err := parsArguments()
+	if err != nil {
+		fmt.Println("Invalid arg!", err)
+	}
+
+	data, err := ReadFromFile(params.fileName)
+	if err != nil {
+		log.Println(err)
+	}
+
+	grep(data, params, os.Stdout)
+}
+
+func parsArguments() (inputFlags, error) {
+	var (
+		after      = flag.Int("A", 1, "+N string after context")
+		before     = flag.Int("B", 0, "+N string before context")
+		context    = flag.Int("C", 0, "+/- N string around context")
+		count      = flag.Bool("c", false, "Count of string of context")
+		ignoreCase = flag.Bool("i", false, "Ignore context case")
+		inversion  = flag.Bool("v", false, "Inverse context")
+		lineNum    = flag.Bool("n", true, "Num context line")
+	)
+
+	flag.Parse()
+
+	flags := inputFlags{
+		after:      *after,
+		before:     *before,
+		count:      *count,
+		ignoreCase: *ignoreCase,
+		inversion:  *inversion,
+		lineNum:    *lineNum,
+		//pattern:  flag.Args()[0],
+		//fileName: flag.Args()[1],
+		pattern:  "eur",
+		fileName: "3/grep/test.txt",
+	}
+
+	if *context != 0 {
+		flags.after = *context
+		flags.before = *context
+	}
+
+	return flags, nil
+}
+
+func ReadFromFile(inputFile string) (map[int]string, error) {
+	file, err := os.Open(inputFile)
+	if err != nil {
+		return map[int]string{}, err
+	}
+	defer file.Close()
+
+	var (
+		table = make(map[int]string, 0)
+		i     = 0
+	)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		table[i] = scanner.Text()
+		i++
+	}
+
+	if err := scanner.Err(); err != nil {
+		return map[int]string{}, err
+	}
+
+	return table, nil
+}
+
+func grep(data map[int]string, params inputFlags, out io.Writer) {
+	var (
+		keys    = make([]int, 0)
+		allKeys = make([]int, 0)
+		res     = make([]int, 0)
+		ln      = len(data)
+	)
+
+	for key, val := range data {
+		allKeys = append(allKeys, key)
+		if params.ignoreCase {
+			val = strings.ToLower(val)
+		}
+		if strings.Contains(val, params.pattern) {
+			keys = append(keys, key)
+		}
+	}
+
+	sort.Ints(keys)
+
+	if params.inversion {
+		keys = Invert(keys, allKeys)
+	}
+
+	if params.before > 0 {
+		res = append(res, before(keys, params.before, ln)...)
+	}
+
+	if params.after > 0 {
+		res = append(res, after(keys, params.after, ln)...)
+	}
+
+	if params.before == 0 && params.after == 0 && !params.count {
+		for _, val := range keys {
+			fmt.Fprintf(out, "%s\n", data[val])
+		}
+	}
+
+	res = Set(res)
+
+	if !params.count {
+		for k, val := range res {
+			if params.lineNum {
+				fmt.Fprintf(out, "%d:%s\n", k+1, data[val])
+			} else {
+				fmt.Fprintf(out, "%s\n", data[val])
+			}
+		}
+	} else {
+		fmt.Fprintf(out, "%d\n", len(keys))
+	}
+}
+
+func Set(data []int) []int {
+	set := make(map[int]bool)
+	var setToSlice []int
+	for _, val := range data {
+		set[val] = true
+	}
+	for i := range set {
+		setToSlice = append(setToSlice, i)
+	}
+	sort.Ints(setToSlice)
+	return setToSlice
+}
+
+func after(keys []int, aft, ln int) []int {
+	var res []int
+	for _, v := range keys {
+		after := v + aft
+		for i := v; i <= after; i++ {
+			if ln > i {
+				res = append(res, i)
+			}
+		}
+	}
+	return Set(res)
+}
+
+func before(keys []int, aft, ln int) []int {
+	var res []int
+	for _, v := range keys {
+		after := v - aft
+		if after < 0 {
+			after = 0
+		}
+		for i := v; i >= after; i-- {
+			if ln > i {
+				res = append(res, i)
+			}
+		}
+	}
+	return Set(res)
+}
+
+func Invert(arr []int, allKeys []int) []int {
+	//var i = 0
+	sort.Ints(allKeys)
+	for i, val := range arr {
+		allKeys = append(allKeys[:val-i], allKeys[val-i+1:]...)
+		//i++
+	}
+	return allKeys
+}

@@ -12,17 +12,32 @@ import (
 )
 
 type inputFlags struct {
-	fields    []int
-	delimiter string
-	filename  string
+	fields        []int
+	delimiter     string
+	filename      string
 	onlyWithDelim bool
+}
+
+func main() {
+	params, err := parseArguments()
+	if err != nil {
+		fmt.Println("Invalid arg!", err)
+		return
+	}
+
+	data, err := ReadFromFile(params.filename)
+	if err != nil {
+		log.Println(err)
+	}
+
+	doCut(data, params, os.Stdout)
 }
 
 func parseArguments() (inputFlags, error) {
 	var (
-		fields    = flag.String("f", "1,3", "Choose fields")
-		delimiter = flag.String("d", ":", "Selected delimiter")
-		sep = flag.Bool("s", true, "Separator")
+		fields    = flag.String("f", "", "Choose fields")
+		delimiter = flag.String("d", "", "Selected delimiter")
+		sep       = flag.Bool("s", false, "Separator")
 	)
 	flag.Parse()
 
@@ -39,10 +54,10 @@ func parseArguments() (inputFlags, error) {
 	}
 
 	params := inputFlags{
-		fields:    cleanFields,
-		delimiter: *delimiter,
+		fields:        cleanFields,
+		delimiter:     *delimiter,
 		onlyWithDelim: *sep,
-		filename:  flag.Args()[0],
+		filename:      flag.Args()[0],
 	}
 
 	return params, nil
@@ -117,25 +132,10 @@ func doCut(data []string, params inputFlags, out io.Writer) {
 
 			fmt.Fprintf(out, "%s", column[num-1])
 
-			if num != params.fields[len(params.fields)-1] && num < len(column){
-					fmt.Fprintf(out, "%s", params.delimiter)
+			if num != params.fields[len(params.fields)-1] && num < len(column) {
+				fmt.Fprintf(out, "%s", params.delimiter)
 			}
 		}
 		fmt.Fprint(out, "\n")
 	}
-}
-
-func main() {
-	params, err := parseArguments()
-	if err != nil {
-		fmt.Println("Invalid arg!", err)
-		return
-	}
-
-	data, err := ReadFromFile(params.filename)
-	if err != nil {
-		log.Println(err)
-	}
-
-	doCut(data, params, os.Stdout)
 }
