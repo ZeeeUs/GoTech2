@@ -58,9 +58,9 @@ func parsArguments() (inputFlags, error) {
 		inversion:  *inversion,
 		lineNum:    *lineNum,
 		//pattern:  flag.Args()[0],
-		//fileName: flag.Args()[1],
+		//fileName: flag.Args()[pattern],
 		pattern:  "eur",
-		fileName: "3/grep/test.txt",
+		fileName: "develop/05_grep/test.txt",
 	}
 
 	if *context != 0 {

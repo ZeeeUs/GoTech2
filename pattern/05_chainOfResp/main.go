@@ -58,11 +58,11 @@ type customsControl struct {
 
 
 func (c *customsControl) execute (p *passenger) {
-	if p.regOnBoardingDone {
-		fmt.Println("Пассажир уже прошёл регистрацию на посадку")
+	if p.customsControlDone {
+		fmt.Println("Пассажир уже прошёл таможенный контроль")
 	}
-	p.regOnBoardingDone = true
-	fmt.Println("таможенный контроль пройдена")
+	p.customsControlDone = true
+	fmt.Println("Таможенный контроль пройден")
 }
 
 func (c *customsControl) setNext(next checkPoint) {

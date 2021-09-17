@@ -5,13 +5,13 @@ import (
 )
 
 func main() {
-	var s = []string{"1", "2", "3"}
+	var s = []string{"pattern", "listing", "develop"}
 	modifySlice(s)
-	fmt.Println(s) // 3 2 3
+	fmt.Println(s) // develop listing develop
 }
 
 func modifySlice(i []string) {
-	i[0] = "3"
+	i[0] = "develop"
 	i = append(i, "4")
 	i[1] = "5"
 	i = append(i, "6")

@@ -42,7 +42,7 @@ func parseArguments() (inputFlags, error) {
 	flag.Parse()
 
 	if len(*delimiter) != 1 {
-		return inputFlags{}, fmt.Errorf("Delim should be with size 1")
+		return inputFlags{}, fmt.Errorf("Delim should be with size pattern")
 	}
 	if len(flag.Args()) != 1 {
 		return inputFlags{}, fmt.Errorf("Filename should be provided")

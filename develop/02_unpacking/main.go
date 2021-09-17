@@ -1,5 +1,20 @@
 package main
 
+/*
+=== Задача на распаковку ===
+Создать Go функцию, осуществляющую примитивную распаковку строки, содержащую повторяющиеся символы / руны, например:
+	- "a4bc2d5e" => "aaaabccddddde"
+	- "abcd" => "abcd"
+	- "45" => "" (некорректная строка)
+	- "" => ""
+Дополнительное задание: поддержка escape - последовательностей
+	- qwe\4\5 => qwe45 (*)
+	- qwe\45 => qwe44444 (*)
+	- qwe\\5 => qwe\\\\\ (*)
+В случае если была передана некорректная строка функция должна возвращать ошибку. Написать unit-тесты.
+Функция должна проходить все тесты. Код должен проходить проверки go vet и golint.
+*/
+
 import (
 	"fmt"
 	"strconv"
@@ -56,10 +71,10 @@ func escapeseq(s string) {
 
 func main() {
 	fmt.Println(unpacking("a4bc2d5e"))
-	//unpacking("abcd")
-	//unpacking("")
-	//unpacking("3245")
-	//unpacking("3eb5d5")
+	//02_unpacking("abcd")
+	//02_unpacking("")
+	//02_unpacking("3245")
+	//02_unpacking("3eb5d5")
 	//tdt(`qwe\a4\r5`)
 	//tdt(`qwe\\5`)
 	//escapeseq(`qwe\\5`)
