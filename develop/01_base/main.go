@@ -2,9 +2,8 @@ package ownmod
 
 import (
 	"fmt"
-	"log"
-
 	"github.com/beevik/ntp"
+	"log"
 )
 
 // PrintExactTime печатает точное время
