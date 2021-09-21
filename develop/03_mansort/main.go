@@ -22,6 +22,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"log"
 	"os"
 	"sort"
 	"strconv"
@@ -38,7 +39,7 @@ type inputFlags struct {
 
 func parsArguments() inputFlags {
 	columnNumber := flag.Int("k", 1, "Number of column for sort")
-	num := flag.Bool("n", true, "Sort by number")
+	num := flag.Bool("n", false, "Sort by number")
 	reverse := flag.Bool("r", false, "Reverse sort")
 	unique := flag.Bool("u", false, "Don't show repeat string")
 	flag.Parse()
@@ -54,7 +55,7 @@ func parsArguments() inputFlags {
 	return flags
 }
 
-func parseFile(inputData string) ([]string, error) {
+func ParseFile(inputData string) ([]string, error) {
 	var data []string
 	file, err := os.Open(inputData)
 	if err != nil {
@@ -77,7 +78,7 @@ func parseFile(inputData string) ([]string, error) {
 func readFromFile(inputData []string) ([]string, error) {
 	var data []string
 	for _, v := range inputData {
-		docData, err := parseFile(v)
+		docData, err := ParseFile(v)
 		if err != nil {
 			return []string{}, err
 		}
@@ -87,7 +88,7 @@ func readFromFile(inputData []string) ([]string, error) {
 	return data, nil
 }
 
-func toUniqueize(data []string) []string {
+func ToUniqueize(data []string) []string {
 	set := make(map[string]bool)
 	var setToSlice []string
 	for _, v := range data {
@@ -98,13 +99,15 @@ func toUniqueize(data []string) []string {
 		setToSlice = append(setToSlice, i)
 	}
 
+	sort.Strings(setToSlice)
+
 	return setToSlice
 }
 
 // Sort - главная функция, которая читает ключи и производит сортировку
 func Sort(data []string, flags inputFlags) []string {
 	if flags.unique {
-		data = toUniqueize(data)
+		data = ToUniqueize(data)
 	}
 
 	compareAsNumbers := func(i, j string) bool {
@@ -156,12 +159,12 @@ func Sort(data []string, flags inputFlags) []string {
 		panic("DEBUG: code should not run here")
 	}
 
-	if flags.reverseSort {
+	if !flags.reverseSort {
+		sort.Slice(data, compareLogic)
+	} else {
 		sort.Slice(data, func(i, j int) bool {
 			return !compareLogic(i, j)
 		})
-	} else {
-		sort.Slice(data, compareLogic)
 	}
 
 	return data
@@ -169,18 +172,9 @@ func Sort(data []string, flags inputFlags) []string {
 
 func main() {
 	par := parsArguments()
-	//data, err := readFromFile(par.filename)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-
-	data := []string{
-		"abhishek 44",
-		"satish pattern",
-		"rajan 22", "zvisehn 6",
-		"naveen listing",
-		"divyam 11",
-		"harsh",
+	data, err := readFromFile(par.filename)
+	if err != nil {
+		log.Fatalln(err)
 	}
 
 	data = Sort(data, par)

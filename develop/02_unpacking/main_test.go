@@ -1,20 +1,24 @@
 package main
 
-import "testing"
+import (
+	"github.com/stretchr/testify/assert"
+	"testing"
+)
 
-func TestHello(t *testing.T) {
-	//var str, result = "a4bc2d5e", "aaaabccddddde"
-	//realResult := Unpacking(str)
-	//
-	//if realResult != result {
-	//	t.Errorf("expected result: %s != %s real result", result, realResult )
-	//}
+func TestUnpacking(t *testing.T) {
+	table := []struct{
+		in string
+		out string
+	}{
+		{"a4bc2d5e", "aaaabccddddde"},
+		{"abcd", "abcd"},
+		{"45", ""},
+		{"", ""},
+	}
 
-	var x, y, result = 2, 2, 4
+	for _, val := range table {
+		result := Unpacking(val.in)
 
-	realResult := Hello(x, y)
-
-	if realResult != result {
-		t.Errorf("%d != %d")
+		assert.Equal(t, result, val.out)
 	}
 }
