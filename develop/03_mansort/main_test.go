@@ -18,7 +18,7 @@ func TestParseFile(t *testing.T) {
 		{
 			testName: "File exist",
 			args:     args{filename: "testingFile.txt"},
-			want:     []string{"hello", "world", "tomato 3", "bread 2", "cucumber 1", "mars 12", "hello"},
+			want:     []string{"hello.html", "world", "tomato 3", "bread 2", "cucumber 1", "mars 12", "hello.html"},
 		},
 		{
 			testName: "File doesn't exist",
@@ -44,8 +44,8 @@ func TestToUniqueize(t *testing.T) {
 		want []string
 	}{
 		{
-			data: []string{"hello", "world", "hello", "world", "hello", "world"},
-			want: []string{"hello", "world"},
+			data: []string{"hello.html", "world", "hello.html", "world", "hello.html", "world"},
+			want: []string{"hello.html", "world"},
 		},
 		{
 			data: []string{"Russia", "Canada", "Brazil", "USA", "China", "Russia", "USA"},
@@ -65,13 +65,13 @@ func TestToUniqueize(t *testing.T) {
 
 func TestSort(t *testing.T) {
 	defaultData := []string{
-		"hello",
+		"hello.html",
 		"world",
 		"tomato 3",
 		"bread 2",
 		"cucumber 1",
 		"mars 12",
-		"hello",
+		"hello.html",
 	}
 	type args struct {
 		data  []string
@@ -90,7 +90,7 @@ func TestSort(t *testing.T) {
 				reverseSort: false,
 				unique:      false,
 			}},
-			want: []string{"bread 2", "cucumber 1", "hello", "hello", "mars 12", "tomato 3", "world"},
+			want: []string{"bread 2", "cucumber 1", "hello.html", "hello.html", "mars 12", "tomato 3", "world"},
 		},
 		{
 			name: "Reverse sort",
@@ -100,7 +100,7 @@ func TestSort(t *testing.T) {
 				reverseSort: true,
 				unique: false,
 			}},
-			want: []string{"world", "tomato 3", "mars 12", "hello", "hello", "cucumber 1", "bread 2"},
+			want: []string{"world", "tomato 3", "mars 12", "hello.html", "hello.html", "cucumber 1", "bread 2"},
 		},
 		{
 			name: "Sort unique",
@@ -110,7 +110,7 @@ func TestSort(t *testing.T) {
 				reverseSort: false,
 				unique: true,
 			}},
-			want: []string{"bread 2", "cucumber 1", "hello", "mars 12", "tomato 3", "world"},
+			want: []string{"bread 2", "cucumber 1", "hello.html", "mars 12", "tomato 3", "world"},
 		},
 		{
 			name: "Sort by num",
@@ -120,7 +120,7 @@ func TestSort(t *testing.T) {
 				reverseSort: false,
 				unique: false,
 			}},
-			want: []string{"hello", "hello", "world", "cucumber 1", "bread 2", "tomato 3", "mars 12"},
+			want: []string{"hello.html", "hello.html", "world", "cucumber 1", "bread 2", "tomato 3", "mars 12"},
 		},
 		{
 			name: "Sort by num & unique",
@@ -131,7 +131,7 @@ func TestSort(t *testing.T) {
 				unique: true,
 			}},
 			want: []string{
-				"hello",
+				"hello.html",
 				"world",
 				"cucumber 1",
 				"bread 2",
@@ -153,7 +153,7 @@ func TestSort(t *testing.T) {
 				"bread 2",
 				"cucumber 1",
 				"world",
-				"hello",
+				"hello.html",
 			},
 		},
 	}

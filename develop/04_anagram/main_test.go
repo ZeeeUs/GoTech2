@@ -36,8 +36,8 @@ func TestBuiltSet(t *testing.T) {
 		out []string
 	}{
 		{
-			[]string{"Hello", "World", "hello", "WoRlD"},
-			[]string{"hello", "world"},
+			[]string{"Hello", "World", "hello.html", "WoRlD"},
+			[]string{"hello.html", "world"},
 		},
 		{
 			[]string{"One", "two", "thrEe", "onE", "TWO", "three"},
