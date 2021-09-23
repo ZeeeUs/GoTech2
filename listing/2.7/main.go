@@ -19,6 +19,7 @@ func asChan(vs ...int) <-chan int {
 	return c
 }
 
+//функция передает инты из 2 каналов в 3й
 func merge(a, b <-chan int) <-chan int {
 	c := make(chan int)
 	go func() {
@@ -33,6 +34,8 @@ func merge(a, b <-chan int) <-chan int {
 	return c
 }
 
+
+//канал не закрывается -> range c получает значение по умолчанию канала (int 0)
 func main() {
 	a := asChan(1, 3, 5, 7)
 	b := asChan(2, 4, 6, 8)

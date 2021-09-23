@@ -21,7 +21,7 @@ func main() {
 	var err error
 	err = test()
 	if err != nil {
-		println("error") // напишет это, т.к. тип хранящего внутри обхекта не nil, a указательн (*customError)
+		println("error") // напишет это, т.к. тип хранящего внутри обхекта не nil, a указатель (*customError)
 		fmt.Printf("%T\n", err)
 		return
 	}

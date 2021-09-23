@@ -11,5 +11,6 @@ func main() {
 	fmt.Println(b)
 	fmt.Println(reflect.TypeOf(a))
 	fmt.Println(reflect.TypeOf(b))
-
 }
+
+// Программа выведет [77 78 79]
