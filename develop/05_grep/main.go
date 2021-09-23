@@ -34,18 +34,18 @@ func main() {
 		log.Println(err)
 	}
 
-	grep(data, params, os.Stdout)
+	Grep(data, params, os.Stdout)
 }
 
 func parsArguments() (inputFlags, error) {
 	var (
-		after      = flag.Int("A", 1, "+N string after context")
+		after      = flag.Int("A", 0, "+N string after context")
 		before     = flag.Int("B", 0, "+N string before context")
 		context    = flag.Int("C", 0, "+/- N string around context")
 		count      = flag.Bool("c", false, "Count of string of context")
 		ignoreCase = flag.Bool("i", false, "Ignore context case")
 		inversion  = flag.Bool("v", false, "Inverse context")
-		lineNum    = flag.Bool("n", true, "Num context line")
+		lineNum    = flag.Bool("n", false, "Num context line")
 	)
 
 	flag.Parse()
@@ -57,10 +57,10 @@ func parsArguments() (inputFlags, error) {
 		ignoreCase: *ignoreCase,
 		inversion:  *inversion,
 		lineNum:    *lineNum,
-		//pattern:  flag.Args()[0],
-		//fileName: flag.Args()[pattern],
-		pattern:  "eur",
-		fileName: "develop/05_grep/test.txt",
+		pattern:  flag.Args()[0],
+		fileName: flag.Args()[1],
+		//pattern:  "eur",
+		//fileName: "develop/05_grep/test.txt",
 	}
 
 	if *context != 0 {
@@ -95,7 +95,7 @@ func ReadFromFile(inputFile string) (map[int]string, error) {
 	return table, nil
 }
 
-func grep(data map[int]string, params inputFlags, out io.Writer) {
+func Grep(data map[int]string, params inputFlags, out io.Writer) {
 	var (
 		keys    = make([]int, 0)
 		allKeys = make([]int, 0)

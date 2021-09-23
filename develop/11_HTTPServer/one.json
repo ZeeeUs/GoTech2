@@ -1,0 +1,12 @@
+[
+  {
+    "user_id": 1,
+    "text": "Hello",
+    "date": "2021-09-09"
+  },
+  {
+    "user_id": 2,
+    "text": "World",
+    "date": "2021-09-19"
+  },
+]
